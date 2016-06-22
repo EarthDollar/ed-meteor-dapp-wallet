@@ -36,11 +36,11 @@ web3.eth.getBlock(0, function(e, res){
             case '0x0cd786a2425d16f152c658316c423e6ce1181e15c3295826d7c9904cba9ce303':
                 Session.set('network', 'test');
                 break;
-            case '0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3':
+            case '0x7681afe3b75795d46e5b6c3944452b2b45d2682404cf3c19bcff7a619b0bd3e9':
                 Session.set('network', 'main');
                 break;
             default:
-                Session.set('network', 'private');
+		Session.set('network', 'private');
         }
     }
 });

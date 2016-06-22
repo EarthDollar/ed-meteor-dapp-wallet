@@ -17,9 +17,9 @@ The available units
 @property selectableUnits
 */
 selectableUnits = [{
-    text: 'ETHER',
+    text: 'Earth',
     value: 'ether'
-},
+}]/*,
 {
     text: 'FINNEY', //(µΞ)
     value: 'finney'
@@ -35,7 +35,7 @@ selectableUnits = [{
 {
     text: 'EUR',
     value: 'eur'
-}];
+}]*/;
 
 
 // Aprils fool
