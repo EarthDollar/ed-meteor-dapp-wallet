@@ -178,10 +178,10 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
     if(newDocument.imported) {
 
         Helpers.eventLogs('Imported wallet: '+ newDocument.address +' checking for any log from block #'+ newDocument.creationBlock);
-        web3.eth.filter({address: newDocument.address, fromBlock: newDocument.creationBlock, toBlock: 'latest'}).get(function(error, logs) {
+        web3.ed.filter({address: newDocument.address, fromBlock: newDocument.creationBlock, toBlock: 'latest'}).get(function(error, logs) {
             if(!error) {
 
-                var creationBlock = EthBlocks.latest.number;
+                var creationBlock = EdBlocks.latest.number;
 
 
                 // get earliest block number of appeared log
@@ -213,9 +213,9 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
     } else if(!newDocument.address) {
 
         Helpers.eventLogs('Contract address not set, checking for contract receipt');
-        web3.eth.getTransactionReceipt(newDocument.transactionHash, function(error, receipt) {
+        web3.ed.getTransactionReceipt(newDocument.transactionHash, function(error, receipt) {
             if(!error && receipt) {
-                web3.eth.getCode(receipt.contractAddress, function(error, code) {
+                web3.ed.getCode(receipt.contractAddress, function(error, code) {
                     Helpers.eventLogs('Contract created on '+ receipt.contractAddress);
 
                     if(!error && code.length > 2) {
@@ -265,12 +265,12 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
         events.push(filter);
         
         // get past logs, to set the new blockNumber
-        var currentBlock = EthBlocks.latest.number;
+        var currentBlock = EdBlocks.latest.number;
         filter.get(function(error, logs) {
             if(!error) {
                 // update last checkpoint block
                 Wallets.update({_id: newDocument._id}, {$set: {
-                    checkpointBlock: (currentBlock || EthBlocks.latest.number) - ethereumConfig.rollBackBy
+                    checkpointBlock: (currentBlock || EdBlocks.latest.number) - ethereumConfig.rollBackBy
                 }});
             }
         });
@@ -279,7 +279,7 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
             if(!error) {
                 Helpers.eventLogs(log);
 
-                if(EthBlocks.latest.number && log.blockNumber > EthBlocks.latest.number) {
+                if(EdBlocks.latest.number && log.blockNumber > EdBlocks.latest.number) {
                     // update last checkpoint block
                     Wallets.update({_id: newDocument._id}, {$set: {
                         checkpointBlock: log.blockNumber
@@ -303,11 +303,11 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
                         Helpers.showNotification('wallet.transactions.notifications.incomingTransaction', {
                             to: Helpers.getAccountNameByAddress(newDocument.address),
                             from: Helpers.getAccountNameByAddress(log.args.from),
-                            amount: EthTools.formatBalance(log.args.value, '0,0.00[000000] unit', 'ether')
+                            amount: EdTools.formatBalance(log.args.value, '0,0.00[000000] unit', 'tree')
                         }, function() {
 
                             // on click show tx info
-                            EthElements.Modal.show({
+                            EdElements.Modal.show({
                                 template: 'views_modals_transactionInfo',
                                 data: {
                                     _id: txId
@@ -335,11 +335,11 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
                         Helpers.showNotification('wallet.transactions.notifications.outgoingTransaction', {
                             to: Helpers.getAccountNameByAddress(log.args.to),
                             from: Helpers.getAccountNameByAddress(newDocument.address),
-                            amount: EthTools.formatBalance(log.args.value, '0,0.00[000000] unit', 'ether')
+                            amount: EdTools.formatBalance(log.args.value, '0,0.00[000000] unit', 'tree')
                         }, function() {
 
                             // on click show tx info
-                            EthElements.Modal.show({
+                            EdElements.Modal.show({
                                 template: 'views_modals_transactionInfo',
                                 data: {
                                     _id: txId
@@ -353,7 +353,7 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
                 if(log.event === 'ConfirmationNeeded') {
                     Helpers.eventLogs('ConfirmationNeeded for '+ newDocument.address +' arrived in block: #'+ log.blockNumber, log.args.value.toNumber() +', Operation '+ log.args.operation);
 
-                    var block = web3.eth.getBlock(log.blockNumber, true, function(err, block){
+                    var block = web3.ed.getBlock(log.blockNumber, true, function(err, block){
 
                         if(!err && block) {
                             var confirmationId = Helpers.makeId('pc', log.args.operation),
@@ -362,7 +362,7 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
                                 depositTx;
 
                             // PREVENT SHOWING pending confirmations, of WATCH ONLY WALLETS
-                            if(!(from = Wallets.findOne({address: log.address})) || !EthAccounts.findOne({address: {$in: from.owners}}))
+                            if(!(from = Wallets.findOne({address: log.address})) || !EdAccounts.findOne({address: {$in: from.owners}}))
                                 return;
 
                             if(accounts[0] && accounts[0].transactions) {
@@ -403,7 +403,7 @@ var setupContractFilters = function(newDocument, checkFromCreationBlock){
                                         initiator: Helpers.getAccountNameByAddress(log.args.initiator),
                                         to: Helpers.getAccountNameByAddress(log.args.to),
                                         from: Helpers.getAccountNameByAddress(newDocument.address),
-                                        amount: EthTools.formatBalance(log.args.value, '0,0.00[000000] unit', 'ether')
+                                        amount: EdTools.formatBalance(log.args.value, '0,0.00[000000] unit', 'tree')
                                     }, function() {
                                         FlowRouter.go('/account/'+ newDocument.address);
                                     });
@@ -472,13 +472,13 @@ observeWallets = function(){
     @param {Object} oldDocument
     */
     var checkWalletConfirmations = function(newDocument, oldDocument){
-        var confirmations = EthBlocks.latest.number - newDocument.creationBlock;
+        var confirmations = EdBlocks.latest.number - newDocument.creationBlock;
 
         if(newDocument.address && (!oldDocument || (oldDocument && !oldDocument.address)) && confirmations < ethereumConfig.requiredConfirmations) {
-            var filter = web3.eth.filter('latest');
+            var filter = web3.ed.filter('latest');
             filter.watch(function(e, blockHash){
                 if(!e) {
-                    var confirmations = EthBlocks.latest.number - newDocument.creationBlock;
+                    var confirmations = EdBlocks.latest.number - newDocument.creationBlock;
 
                     if(confirmations < ethereumConfig.requiredConfirmations && confirmations > 0) {
                         Helpers.eventLogs('Checking wallet address '+ newDocument.address +' for code. Current confirmations: '+ confirmations);
@@ -486,7 +486,7 @@ observeWallets = function(){
                         // TODO make smarter?
 
                         // Check if the code is still at the contract address, if not remove the wallet
-                        web3.eth.getCode(newDocument.address, function(e, code){
+                        web3.ed.getCode(newDocument.address, function(e, code){
                             if(!e) {
                                 if(code.length > 2) {
                                     updateContractData(newDocument);                                
@@ -528,7 +528,7 @@ observeWallets = function(){
                     contracts['ct_'+ newDocument._id] = WalletContract.at();
 
                     // remove account, if something is searching since more than 30 blocks
-                    if(newDocument.creationBlock + 50 <= EthBlocks.latest.number)
+                    if(newDocument.creationBlock + 50 <= EdBlocks.latest.number)
                         Wallets.remove(newDocument._id);
                     else
                         setupContractFilters(newDocument);
@@ -594,8 +594,8 @@ observeWallets = function(){
 
                                     // add address to account
                                     Wallets.update(newDocument._id, {$set: {
-                                        creationBlock: EthBlocks.latest.number - 1,
-                                        checkpointBlock: EthBlocks.latest.number - 1,
+                                        creationBlock: EdBlocks.latest.number - 1,
+                                        checkpointBlock: EdBlocks.latest.number - 1,
                                         address: contract.address
                                     }, $unset: {
                                         code: ''
@@ -609,7 +609,7 @@ observeWallets = function(){
                                     setupContractFilters(newDocument);
 
                                     // Show backup note
-                                    EthElements.Modal.question({
+                                    EdElements.Modal.question({
                                         template: 'views_modals_backupContractAddress',
                                         data: {
                                             address: contract.address
@@ -642,7 +642,7 @@ observeWallets = function(){
                 contracts['ct_'+ newDocument._id] = WalletContract.at(newDocument.address);
 
                 // update balance on start
-                web3.eth.getBalance(newDocument.address, function(err, res){
+                web3.ed.getBalance(newDocument.address, function(err, res){
                     if(!err) {
                         Wallets.update(newDocument._id, {$set: {
                             balance: res.toString(10)
@@ -651,7 +651,7 @@ observeWallets = function(){
                 });
 
                 // check if wallet has code
-                web3.eth.getCode(newDocument.address, function(e, code) {
+                web3.ed.getCode(newDocument.address, function(e, code) {
                     if(!e) {
                         if(code && code.length > 2){
                             Wallets.update(newDocument._id, {$unset: {
@@ -709,7 +709,7 @@ observeWallets = function(){
 
             // delete the all tx and pending conf
             _.each(Transactions.find({from: newDocument.address}).fetch(), function(tx){
-                if(!Wallets.findOne({transactions: tx._id}) && !EthAccounts.findOne({transactions: tx._id}))
+                if(!Wallets.findOne({transactions: tx._id}) && !EdAccounts.findOne({transactions: tx._id}))
                     Transactions.remove(tx._id);
             });
             _.each(PendingConfirmations.find({from: newDocument.address}).fetch(), function(pc){

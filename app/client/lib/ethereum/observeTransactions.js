@@ -31,12 +31,12 @@ addTransactionAfterSend = function(txHash, amount, from, to, gasPrice, estimated
     }});
 
     // add from Account
-    EthAccounts.update({address: from}, {$addToSet: {
+    EdAccounts.update({address: from}, {$addToSet: {
         transactions: txId
     }});
 
     // add to Account
-    EthAccounts.update({address: to}, {$addToSet: {
+    EdAccounts.update({address: to}, {$addToSet: {
         transactions: txId
     }});
 };
@@ -63,12 +63,12 @@ addTransaction = function(log, from, to, value){
         value: value
     });
 
-    var block = web3.eth.getBlock(log.blockNumber, false, function(err, block){
+    var block = web3.ed.getBlock(log.blockNumber, false, function(err, block){
         if(!err) {
 
-            web3.eth.getTransaction(log.transactionHash, function(err, transaction) {
+            web3.ed.getTransaction(log.transactionHash, function(err, transaction) {
                 if(!err && transaction) {
-                    web3.eth.getTransactionReceipt(log.transactionHash, function(err, receipt){
+                    web3.ed.getTransactionReceipt(log.transactionHash, function(err, receipt){
 
                         delete transaction.hash;
                         transaction.transactionHash = log.transactionHash;
@@ -139,7 +139,7 @@ var updateTransaction = function(newDocument, transaction, receipt){
 
         // check for code on the address
         if(!newDocument.contractAddress && receipt.contractAddress) {
-            web3.eth.getCode(receipt.contractAddress, function(e, code) {
+            web3.ed.getCode(receipt.contractAddress, function(e, code) {
                 if(!e && code.length > 2) {
                     Transactions.update({_id: id}, {$set: {
                         deployedData: code
@@ -226,10 +226,10 @@ var updateTransaction = function(newDocument, transaction, receipt){
     if(newDocument.outOfGas) {
         var warningText = TAPi18n.__('wallet.transactions.error.outOfGas', {from: Helpers.getAccountNameByAddress(newDocument.from), to: Helpers.getAccountNameByAddress(newDocument.to)});
 
-        if(EthAccounts.findOne({address: newDocument.from})) {
-            web3.eth.getBalance(newDocument.from, newDocument.blockNumber, function(e, now){
+        if(EdAccounts.findOne({address: newDocument.from})) {
+            web3.ed.getBalance(newDocument.from, newDocument.blockNumber, function(e, now){
                 if(!e) {
-                    web3.eth.getBalance(newDocument.from, newDocument.blockNumber-1, function(e, then){
+                    web3.ed.getBalance(newDocument.from, newDocument.blockNumber-1, function(e, then){
                         if(!e && now.toString(10) !== then.toString(10)) {
                             console.log(newDocument.transactionHash, 'Removed out of gas, as balance changed');
                             Transactions.update({_id: id}, {$set: {outOfGas: false}});
@@ -272,10 +272,10 @@ observeTransactions = function(){
 
         // check for confirmations
         if(!tx.confirmed) {
-            var filter = web3.eth.filter('latest');
+            var filter = web3.ed.filter('latest');
             filter.watch(function(e, blockHash){
                 if(!e) {
-                    var confirmations = (tx.blockNumber && EthBlocks.latest.number) ? (EthBlocks.latest.number + 1) - tx.blockNumber : 0;
+                    var confirmations = (tx.blockNumber && EdBlocks.latest.number) ? (EdBlocks.latest.number + 1) - tx.blockNumber : 0;
                     confCount++;
 
                     // get the latest tx data
@@ -293,8 +293,8 @@ observeTransactions = function(){
 
 
                         // Check if the tx still exists, if not disable the tx
-                        web3.eth.getTransaction(tx.transactionHash, function(e, transaction){
-                            web3.eth.getTransactionReceipt(tx.transactionHash, function(e, receipt){
+                        web3.ed.getTransaction(tx.transactionHash, function(e, transaction){
+                            web3.ed.getTransactionReceipt(tx.transactionHash, function(e, receipt){
                                 if(e || !receipt || !transaction) return;
 
                                 // update with receipt
@@ -321,8 +321,8 @@ observeTransactions = function(){
                     if(confirmations > ethereumConfig.requiredConfirmations || confCount > ethereumConfig.requiredConfirmations*2) {
 
                         // confirm after a last check
-                        web3.eth.getTransaction(tx.transactionHash, function(e, transaction){
-                            web3.eth.getTransactionReceipt(tx.transactionHash, function(e, receipt){
+                        web3.ed.getTransaction(tx.transactionHash, function(e, transaction){
+                            web3.ed.getTransactionReceipt(tx.transactionHash, function(e, receipt){
                                 if(!e) {
 
                                     // if still not mined, remove tx
@@ -335,7 +335,7 @@ observeTransactions = function(){
 
                                         // check if parent block changed
                                         // TODO remove if later tx.blockNumber can be null again
-                                        web3.eth.getBlock(transaction.blockNumber, function(e, block) {
+                                        web3.ed.getBlock(transaction.blockNumber, function(e, block) {
                                             if(!e) {
 
                                                 if(block.hash === transaction.blockHash) {
@@ -380,7 +380,7 @@ observeTransactions = function(){
         @method added
         */
         added: function(newDocument) {
-            var confirmations = EthBlocks.latest.number - newDocument.blockNumber;
+            var confirmations = EdBlocks.latest.number - newDocument.blockNumber;
 
             // add to accounts
             Wallets.update({address: newDocument.from}, {$addToSet: {
@@ -407,7 +407,7 @@ observeTransactions = function(){
                !newDocument.exchangeRates.btc ||
                !newDocument.exchangeRates.usd ||
                !newDocument.exchangeRates.eur) {
-                HTTP.get('https://min-api.cryptocompare.com/data/pricehistorical?fsym=ETH&tsyms=BTC,USD,EUR&ts='+ newDocument.timestamp, function(e, res){
+                HTTP.get('https://min-api.cryptocompare.com/data/pricehistorical?fsym=ED&tsyms=BTC,USD,EUR&ts='+ newDocument.timestamp, function(e, res){
 
                     if(!e && res && res.statusCode === 200) {
                         var content = JSON.parse(res.content);
@@ -458,10 +458,10 @@ observeTransactions = function(){
             Wallets.update({address: document.to}, {$pull: {
                 transactions: document._id
             }});
-            EthAccounts.update({address: document.from}, {$pull: {
+            EdAccounts.update({address: document.from}, {$pull: {
                 transactions: document._id
             }});
-            EthAccounts.update({address: document.to}, {$pull: {
+            EdAccounts.update({address: document.to}, {$pull: {
                 transactions: document._id
             }});
         }

@@ -78,7 +78,7 @@ Helpers.formatNumberByDecimals = function(number, decimals){
         numberFormat += "0";
     }
 
-    return EthTools.formatNumber(new BigNumber(number, 10).dividedBy(Math.pow(10, decimals)), numberFormat);
+    return EdTools.formatNumber(new BigNumber(number, 10).dividedBy(Math.pow(10, decimals)), numberFormat);
 };
 
 /**
@@ -101,7 +101,7 @@ Helpers.checkChain = function(callback){
     return callback(null);
 
 
-    web3.eth.getCode(originalContractAddress, function(e, code){
+    web3.ed.getCode(originalContractAddress, function(e, code){
         if(code && code.length <= 2) {
 
             if(_.isFunction(callback))
@@ -119,7 +119,7 @@ Check if the given wallet is a watch only wallet, by checking if we are one of o
 @param {String} id the id of the wallet to check
 */
 Helpers.isWatchOnly = function(id) {
-    return !Wallets.findOne({_id: id, owners: {$in: _.pluck(EthAccounts.find({}).fetch(), 'address')}});
+    return !Wallets.findOne({_id: id, owners: {$in: _.pluck(EdAccounts.find({}).fetch(), 'address')}});
 };
 
 /**
@@ -144,7 +144,7 @@ Helpers.showNotification = function(i18nText, values, callback) {
 };
 
 /**
-Gets the docuement matching the given addess from the EthAccounts or Wallets collection.
+Gets the docuement matching the given addess from the EdAccounts or Wallets collection.
 
 @method getAccountByAddress
 @param {String} address
@@ -154,7 +154,7 @@ Helpers.getAccountByAddress = function(address, reactive) {
     var options = (reactive === false) ? {reactive: false} : {};
     if(_.isString(address))
         address = address.toLowerCase();
-    return EthAccounts.findOne({address: address}, options) || Wallets.findOne({address: address}, options) || CustomContracts.findOne({address: address}, options);
+    return EdAccounts.findOne({address: address}, options) || Wallets.findOne({address: address}, options) || CustomContracts.findOne({address: address}, options);
 };
 
 /**
@@ -266,7 +266,7 @@ Helpers.formatTransactionBalance = function(value, exchangeRates, unit) {
         else 
             format += '[0]';
         
-        var price = new BigNumber(String(web3.fromWei(value, 'ether')), 10).times(exchangeRates[unit].price);
+        var price = new BigNumber(String(web3.fromSeed(value, 'tree')), 10).times(exchangeRates[unit].price);
         return EthTools.formatNumber(price, format) + ' '+ unit.toUpperCase();
     } else {
         return EthTools.formatBalance(value, format + '[0000000000000000] UNIT');

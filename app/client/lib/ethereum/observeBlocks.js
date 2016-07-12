@@ -25,7 +25,7 @@ updateBalances = function() {
     // UPDATE WALLETS ACCOUNTS balance
     _.each(walletsAndContracts, function(wallet){
         if(wallet.address) {
-            web3.eth.getBalance(wallet.address, function(err, res){
+            web3.ed.getBalance(wallet.address, function(err, res){
                 if(!err) {
                     // is of type wallet
                     if(wallet.creationBlock) {
@@ -52,7 +52,7 @@ updateBalances = function() {
 
     
     // UPDATE TOKEN BALANCES
-    var walletsContractsAndAccounts = EthAccounts.find().fetch().concat(walletsAndContracts);
+    var walletsContractsAndAccounts = EdAccounts.find().fetch().concat(walletsAndContracts);
 
     _.each(Tokens.find().fetch(), function(token){
         if(!token.address)
@@ -92,7 +92,7 @@ observeLatestBlocks = function(){
     updateBalances();
 
     // GET the latest blockchain information
-    web3.eth.filter('latest').watch(function(e, res){
+    web3.ed.filter('latest').watch(function(e, res){
         if(!e) {
             // console.log('Block arrived ', res);
             updateBalances();

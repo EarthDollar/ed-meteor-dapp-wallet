@@ -26,7 +26,7 @@ Meteor.Spinner.options = {
 
 
 // Stop app operation, when the node is syncing
-web3.eth.isSyncing(function(error, syncing) {
+web3.ed.isSyncing(function(error, syncing) {
     if(!error) {
 
         if(syncing === true) {
@@ -66,8 +66,8 @@ var connect = function(){
 
     if(web3.isConnected()) {
 
-        // only start app operation, when the node is not syncing (or the eth_syncing property doesn't exists)
-        web3.eth.getSyncing(function(e, sync) {
+        // only start app operation, when the node is not syncing (or the ed_syncing property doesn't exists)
+        web3.ed.getSyncing(function(e, sync) {
             if(e || !sync)
                 connectToNode();
         });
@@ -77,11 +77,11 @@ var connect = function(){
         // make sure the modal is rendered after all routes are executed
         Meteor.setTimeout(function(){
             // if in mist, tell to start ged, otherwise start with RPC
-            var gethRPC = (web3.admin) ? 'ged' : 'ged --rpc --rpccorsdomain "'+window.location.protocol + '//' + window.location.host+'"';
+            var gedRPC = (web3.admin) ? 'ged' : 'ged --rpc --rpccorsdomain "'+window.location.protocol + '//' + window.location.host+'"';
 
-            EthElements.Modal.question({
+            EdElements.Modal.question({
                 text: new Spacebars.SafeString(TAPi18n.__('wallet.app.texts.connectionError' + (web3.admin ? 'Mist' : 'Browser'), 
-                    {node: gethRPC})),
+                    {node: gedRPC})),
                 ok: function(){
                     Tracker.afterFlush(function(){
                         connect();

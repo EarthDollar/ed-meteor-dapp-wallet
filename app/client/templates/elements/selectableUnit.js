@@ -17,13 +17,9 @@ The available units
 @property selectableUnits
 */
 selectableUnits = [{
-    text: 'Earth',
-    value: 'ether'
+    text: 'Tree',
+    value: 'tree'
 }]/*,
-{
-    text: 'FINNEY', //(µΞ)
-    value: 'finney'
-},
 {
     text: 'BTC',
     value: 'btc'
@@ -38,27 +34,6 @@ selectableUnits = [{
 }]*/;
 
 
-// Aprils fool
-if (moment().format('MM-DD')=='04-01') {
-    selectableUnits.push({ text: 'SZABO', value: 'szabo'},
-        { text: 'SHANNON', value: 'shannon'},
-        { text: 'LOVELACE', value: 'lovelace'},
-        { text: 'BABBAGE', value: 'babbage'},
-        { text: 'WEI', value: 'wei'},
-        { text: 'NOETHER', value: 'noether'})
-
-// Claude's Birthday
-} else if (moment().format('MM-DD')=='04-30') { 
-    selectableUnits.push({ text: 'SHANNON', value: 'shannon'})
-// Ada's Birthday
-} else if (moment().format('MM-DD')=='12-10') { 
-    selectableUnits.push({ text: 'LOVELACE', value: 'lovelace'})
-// Charles's Birthday
-} else if (moment().format('MM-DD')=='12-26') { 
-    selectableUnits.push({ text: 'BABBAGE', value: 'babbage'})
-}
-
-
 Template['elements_selectableUnit'].helpers({
     /**
     Gets currently selected unit
@@ -67,7 +42,7 @@ Template['elements_selectableUnit'].helpers({
     */
     'selectedUnit': function(){
         var unit = _.find(selectableUnits, function(unit){
-            return unit.value === EthTools.getUnit();
+            return unit.value === EdTools.getUnit();
         });
 
         if(unit)
@@ -90,6 +65,6 @@ Template['elements_selectableUnit'].events({
     @event change .inline-form
     */
     'change .inline-form': function(e, template, value){
-        EthTools.setUnit(value);
+        EdTools.setUnit(value);
     }
 });

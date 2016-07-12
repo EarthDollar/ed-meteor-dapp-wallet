@@ -17,7 +17,7 @@ var setupContractFilters = function(newDocument){
 
     var blockToCheckBack = (newDocument.checkpointBlock || 0) - ethereumConfig.rollBackBy;
 
-    // TODO change to 0, when new geth is out!!!!!
+    // TODO change to 0, when new ged is out!!!!!
     if(blockToCheckBack < 400000)
         blockToCheckBack = 400000;
 
@@ -40,12 +40,12 @@ var setupContractFilters = function(newDocument){
     events.push(filter);
 
     // get past logs, to set the new blockNumber
-    var currentBlock = EthBlocks.latest.number;
+    var currentBlock = EdBlocks.latest.number;
     filter.get(function(error, logs) {
         if(!error) {
             // update last checkpoint block
             Tokens.update({_id: newDocument._id}, {$set: {
-                checkpointBlock: (currentBlock || EthBlocks.latest.number) - ethereumConfig.rollBackBy
+                checkpointBlock: (currentBlock || EdBlocks.latest.number) - ethereumConfig.rollBackBy
             }});
         }
     });
@@ -54,7 +54,7 @@ var setupContractFilters = function(newDocument){
         if(!error) {
             // Helpers.eventLogs(log);
 
-            if(EthBlocks.latest.number && log.blockNumber > EthBlocks.latest.number) {
+            if(EdBlocks.latest.number && log.blockNumber > EdBlocks.latest.number) {
                 // update last checkpoint block
                 Tokens.update({_id: newDocument._id}, {$set: {
                     checkpointBlock: log.blockNumber
@@ -83,7 +83,7 @@ var setupContractFilters = function(newDocument){
                     }, function() {
 
                         // on click show tx info
-                        EthElements.Modal.show({
+                        EdElements.Modal.show({
                             template: 'views_modals_transactionInfo',
                             data: {
                                 _id: txId
@@ -122,7 +122,7 @@ observeTokens = function(){
         added: function(newDocument) {
 
             // check if wallet has code
-            web3.eth.getCode(newDocument.address, function(e, code) {
+            web3.ed.getCode(newDocument.address, function(e, code) {
                 if(!e) {
                     if(code && code.length > 2){
                         Tokens.update(newDocument._id, {$unset: {

@@ -41,12 +41,12 @@ Template.registerHelper('isMistMode', function(){
 });
 
 /**
-Check if currenct unit is an ether unit
+Check if currenct unit is an tree unit
 
-@method (isEtherUnit)
+@method (isEdUnit)
 **/
-Template.registerHelper('isEtherUnit', function(){
-    var unit = EthTools.getUnit();
+Template.registerHelper('isEdUnit', function(){
+    var unit = EdTools.getUnit();
     return !(unit === 'usd' || unit === 'eur' || unit === 'btc');
 });
 
@@ -57,7 +57,7 @@ Return the current unit
 @method (unit)
 **/
 Template.registerHelper('unit', function(){
-    return 'Earthdollar';//EthTools.getUnit(); //earthdollar
+    return EdTools.getUnit(); 
 });
 
 /**
@@ -66,7 +66,7 @@ Return the latest block
 @method (latestBlock)
 **/
 Template.registerHelper('latestBlock', function(){
-    return EthBlocks.latest;
+    return EdBlocks.latest;
 });
 
 /**
@@ -75,7 +75,7 @@ Returns a list of accounts and wallets sorted by balance
 @method (latestBlock)
 **/
 Template.registerHelper('selectAccounts', function(){
-    var accounts = EthAccounts.find({}, {sort: {name: 1}}).fetch();
+    var accounts = EdAccounts.find({}, {sort: {name: 1}}).fetch();
     accounts = _.union(Wallets.find({owners: {$in: _.pluck(accounts, 'address')}, address: {$exists: true}}, {sort: {name: 1}}).fetch(), accounts);
     accounts.sort(Helpers.sortByBalance);
     return accounts;
@@ -142,7 +142,7 @@ Formats a timestamp to any format given.
 @method (formatTime)
 @param {String} time         The timstamp, can be string or unix format
 @param {String} format       the format string, can also be "iso", to format to ISO string, or "fromnow"
-//@param {Boolean} realTime    Whether or not this helper should re-run every 10s
+//@param {Boolean} realTime    Whtree or not this helper should re-run every 10s
 @return {String} The formated time
 **/
 Template.registerHelper('formatTime', Helpers.formatTime);
@@ -151,7 +151,7 @@ Template.registerHelper('formatTime', Helpers.formatTime);
 /**
 Formats a given transactions balance
 
-    {{formatTransactionBalance value exchangeRates "ether"}}
+    {{formatTransactionBalance value exchangeRates "tree"}}
 
 @method formatTransactionBalance
 @param {String} value  the value to format

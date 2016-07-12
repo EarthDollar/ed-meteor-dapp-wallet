@@ -40,10 +40,10 @@ mrt:qrcodesvg
 sacha:spin
 frozeman:global-notifications
 agnito:simptip
-ethereum:elements
-ethereum:web3
-ethereum:blocks
-ethereum:accounts
+metf:elements
+metf:web3
+metf:blocks
+metf:accounts
 ethereum:dapp-styles
 numeral:numeral
 jrudio:bluebird
