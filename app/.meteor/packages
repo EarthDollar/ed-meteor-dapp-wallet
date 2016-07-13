@@ -44,6 +44,6 @@ metf:elements
 metf:web3
 metf:blocks
 metf:accounts
-ethereum:dapp-styles
+metf:dapp-styles
 numeral:numeral
 jrudio:bluebird
