@@ -288,7 +288,7 @@ observeTransactions = function(){
                     }
 
 
-                    if(confirmations < ethereumConfig.requiredConfirmations && confirmations >= 0) {
+                    if(confirmations < earthdollarConfig.requiredConfirmations && confirmations >= 0) {
                         Helpers.eventLogs('Checking transaction '+ tx.transactionHash +'. Current confirmations: '+ confirmations);
 
 
@@ -318,7 +318,7 @@ observeTransactions = function(){
 
                     }
 
-                    if(confirmations > ethereumConfig.requiredConfirmations || confCount > ethereumConfig.requiredConfirmations*2) {
+                    if(confirmations > earthdollarConfig.requiredConfirmations || confCount > earthdollarConfig.requiredConfirmations*2) {
 
                         // confirm after a last check
                         web3.ed.getTransaction(tx.transactionHash, function(e, transaction){

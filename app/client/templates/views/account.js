@@ -11,7 +11,7 @@ Watches custom events
 */
 var addLogWatching = function(newDocument){
     var contractInstance = web3.eth.contract(newDocument.jsonInterface).at(newDocument.address);
-    var blockToCheckBack = (newDocument.checkpointBlock || 0) - ethereumConfig.rollBackBy;
+    var blockToCheckBack = (newDocument.checkpointBlock || 0) - earthdollarConfig.rollBackBy;
     
     if(blockToCheckBack < 0)
         blockToCheckBack = 0;
@@ -32,7 +32,7 @@ var addLogWatching = function(newDocument){
         if(!error) {
             // update last checkpoint block
             CustomContracts.update({_id: newDocument._id}, {$set: {
-                checkpointBlock: (currentBlock || EthBlocks.latest.number) - ethereumConfig.rollBackBy
+                checkpointBlock: (currentBlock || EthBlocks.latest.number) - earthdollarConfig.rollBackBy
             }});
         }
     });
@@ -138,7 +138,7 @@ Template['views_account'].helpers({
     @method (showDailyLimit)
     */
     'showDailyLimit': function(){
-        return (this.dailyLimit && this.dailyLimit !== ethereumConfig.dailyLimitDefault);
+        return (this.dailyLimit && this.dailyLimit !== earthdollarConfig.dailyLimitDefault);
     },
     /**
     Show requiredSignatures section

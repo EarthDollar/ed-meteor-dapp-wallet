@@ -31,12 +31,7 @@ diff-sequence@1.0.6
 ecmascript@0.4.6
 ecmascript-runtime@0.2.11
 ejson@1.0.12
-ethereum:accounts@0.3.10
-ethereum:blocks@0.3.1
-ethereum:dapp-styles@0.5.4
-ethereum:elements@0.7.1
-ethereum:tools@0.5.2
-ethereum:web3@0.15.3
+ethereum:dapp-styles@0.5.5
 fastclick@1.0.12
 frozeman:animation-helper@0.2.6
 frozeman:global-notifications@0.2.1
@@ -68,6 +63,11 @@ mdg:validation-error@0.5.1
 meteor@1.1.15
 meteor-base@1.0.4
 meteorspark:util@0.2.0
+metf:accounts@0.3.10
+metf:blocks@0.3.1
+metf:elements@0.7.3
+metf:tools@0.5.2
+metf:web3@0.17.0-alpha
 minifier-css@1.1.12
 minifier-js@1.1.12
 minimongo@1.0.17
