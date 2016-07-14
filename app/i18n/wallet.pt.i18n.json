@@ -23,7 +23,7 @@
             "texts": {
                 "note": "Nota",
                 "balance": "Saldo",
-                "connectionErrorMist": "Não foi possível conectar. Inicie Geth usando:<br><br><small><code>__node__</code><br><br> Assegure-se que o endereço IPC está configurado corretamente desta forma: <br><code>geth --datadir ... --ipcpath /Users/&lt;yourUser&gt;/Library/Earthdollar/geth.ipc</code><br>or<br><code>geth --datadir ... --ipcpath /Users/&lt;yourUser&gt;/.earth dollareum/geth.ipc</code>. <br><br>Opcional: <code>--unlock &lt;suaConta&gt;.</code></small>",
+                "connectionErrorMist": "Não foi possível conectar. Inicie Geth usando:<br><br><small><code>__node__</code><br><br> Assegure-se que o endereço IPC está configurado corretamente desta forma: <br><code>geth --datadir ... --ipcpath /Users/&lt;yourUser&gt;/Library/Earthdollar/ged.ipc</code><br>or<br><code>geth --datadir ... --ipcpath /Users/&lt;yourUser&gt;/.earthdollar/ged.ipc</code>. <br><br>Opcional: <code>--unlock &lt;suaConta&gt;.</code></small>",
                 "connectionErrorBrowser": "Não foi possível conectar. Por favor inicie Geth com as seguintes opções: <br><br><small><code>__node__</code><br><br>Opcional: <code>--unlock &lt;suaConta&gt;.</code></small>",
                 "pendingConfirmationsBadge": "Aguardando confirmação",
                 "nodeSyncing": "__blockDiff__ blocos restantes",
@@ -81,7 +81,7 @@
             "owners": "Donos",
             "walletsDescription": "Esses são contratos que existem no blockchain e podem armazenar earth dollar e outras moedas. Uma carteira pode ter várias contas como donas. Carteiras mantem um histórico mais preciso de transferências",
             "walletsDescriptionNotEnoughFunds": "Uma vez que você obtiver ao menos 1 earth dollar poderá criar contratos mais sofisticados como carteiras, que podem funcionar como contas conjuntas administradas por diversas contas e ter limites diários de saques. Para criar um contrato ainda mais personalizado, vá na aba  <em>Contratos</em>.",
-            "accountsDescription": "Contas são chaves privadas protegidas por uma senha, que podem armazenar earth dollar, outras moedas baseadas no earth dollareum e controlar contratos. Contas não exibem transações recebidas.",
+            "accountsDescription": "Contas são chaves privadas protegidas por uma senha, que podem armazenar earth dollar, outras moedas baseadas no earthdollar e controlar contratos. Contas não exibem transações recebidas.",
             "buttons": {
                 "deposit": "Depositar Ether",
                 "depositBitcoin": "Depositar com Bitcoin",
@@ -272,7 +272,7 @@
             "title": "<strong>Fichas</strong> customizadas",
             "subTitle": "Ficha adicionada",
             "admin": "__name__ (administração)",
-            "description": "Fichas são moedas, fichas colecionáveis ou outros tokens fungíveis construídos na plataforma Earthdollar. Para que suas contas possam ver o seu saldo e enviar fichas, é necessário adicionar o endereço do token aqui. Você pode criar sua ficha modificando esse  <a href=\"http://chriseth.github.io/browser-solidity/?gist=0d1a998d949e26942212\" target=\"_blank\">exemplo de ficha</a>. Leia mais sobre isso no nosso tutorial <a href=\"https://www.earth dollareum.org/token#the-code\" target=\"_blank\">como criar fichas no Earthdollar (em inglês)</a>.",
+            "description": "Fichas são moedas, fichas colecionáveis ou outros tokens fungíveis construídos na plataforma Earthdollar. Para que suas contas possam ver o seu saldo e enviar fichas, é necessário adicionar o endereço do token aqui. Você pode criar sua ficha modificando esse  <a href=\"http://chriseth.github.io/browser-solidity/?gist=0d1a998d949e26942212\" target=\"_blank\">exemplo de ficha</a>. Leia mais sobre isso no nosso tutorial <a href=\"https://www.earthdollar.org/token#the-code\" target=\"_blank\">como criar fichas no Earthdollar (em inglês)</a>.",
             "deleteToken": "Você quer parar de observar a ficha <strong>__token__</strong>?",
             "addedToken": "Ficha __token__ adicinada na sua lista",
             "editedToken": "Ficha __token__ enviada",
@@ -300,7 +300,7 @@
             "writeToContract": "Alterar no contrato",
             "pickContract": "Escolha um contrato",
             "pickFunction": "Escolha uma função",
-            "noContract": "<p>Escreva aqui o código do contrato desejado. Você pode encontrar exemplos de diversos contratos em <a href=\"http://earth dollareum.org\" target=\"_blank\">earth dollareum.org</a>: </p> <ul><li><a href=\"http://earth dollareum.org/token#the-code\" target=\"_blank\">Emitir uma moeda</a></li><li><a href=\"http://earth dollareum.org/crowdsale#the-code\" target=\"_blank\">Começe um financiamento coletivo</a></li><li><a href=\"http://earth dollareum.org/dao#the-code\" target=\"_blank\">Crie sua empresa no blockchain</a></li></ul>",
+            "noContract": "<p>Escreva aqui o código do contrato desejado. Você pode encontrar exemplos de diversos contratos em <a href=\"http://earthdollar.org\" target=\"_blank\">earthdollar.org</a>: </p> <ul><li><a href=\"http://earthdollar.org/token#the-code\" target=\"_blank\">Emitir uma moeda</a></li><li><a href=\"http://earthdollar.org/crowdsale#the-code\" target=\"_blank\">Começe um financiamento coletivo</a></li><li><a href=\"http://earthdollar.org/dao#the-code\" target=\"_blank\">Crie sua empresa no blockchain</a></li></ul>",
             "buttons": {
                 "showContractInfo": "Mostrar informação do contrato",
                 "hideContractInfo": "Esconder informação do contrato",

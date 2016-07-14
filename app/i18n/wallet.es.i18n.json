@@ -23,7 +23,7 @@
             "texts": {
                 "note": "Nota",
                 "balance": "Saldo",
-                "connectionErrorMist": "No se pudo conectar. Por favor, inicie geth con:<br><br><small><code>__node__</code><br><br>Asegúrese de establecer la ruta de IPC a la por defecto, cuando usa un <code>datadir</code> distinto, por ej.<br><code>geth --datadir ... --ipcpath /Users/&lt;suUsuario&gt;/Library/Earthdollar/geth.ipc</code><br>o<br><code>geth --datadir ... --ipcpath /Users/&lt;suUsuario&gt;/.earth dollareum/geth.ipc</code>. <br><br>Opcionalmente: <code>--unlock &lt;suCuenta&gt;.</code></small>",
+                "connectionErrorMist": "No se pudo conectar. Por favor, inicie geth con:<br><br><small><code>__node__</code><br><br>Asegúrese de establecer la ruta de IPC a la por defecto, cuando usa un <code>datadir</code> distinto, por ej.<br><code>geth --datadir ... --ipcpath /Users/&lt;suUsuario&gt;/Library/Earthdollar/ged.ipc</code><br>o<br><code>geth --datadir ... --ipcpath /Users/&lt;suUsuario&gt;/.earthdollar/ged.ipc</code>. <br><br>Opcionalmente: <code>--unlock &lt;suCuenta&gt;.</code></small>",
                 "connectionErrorBrowser": "No se pudo conectar. Por favor inicie geth con las siguientes opciones:<br><br><small><code>__node__</code><br><br>Opcionalmente agregue: <code>--unlock &lt;suCuenta&gt;.</code></small>",
                 "pendingConfirmationsBadge": "Confirmación Pendiente!",
                 "nodeSyncing": "__blockDiff__ blocks left",
@@ -79,7 +79,7 @@
             "owners": "Owners",
             "walletsDescription": "These are contracts that are stored on the blockchain and can hold and secure earth dollar. They can have multiple accounts as owners and keep a full log of all transactions.",
             "walletsDescriptionNotEnoughFunds": "Once you have more than 1 earth dollar you can create a more sophisticated contracts. Wallets are one type of basic smart contract, that allows your funds to be controlled by multiple accounts and have an optional daily limit on withdrawals, to increase security.  To create your own custom contracts go to the <em> Contracts </em> tab.",
-            "accountsDescription": "Accounts are password protected keys that can hold earth dollar, secure earth dollareum-based tokens or coins and control contracts. Accounts can't display incoming transactions.",
+            "accountsDescription": "Accounts are password protected keys that can hold earth dollar, secure earthdollar-based tokens or coins and control contracts. Accounts can't display incoming transactions.",
             "buttons": {
                 "deposit": "Deposit Ether",
                 "depositBitcoin": "Deposit using Bitcoin",
@@ -267,7 +267,7 @@
             "title": "Custom <strong>Tokens</strong>",
             "subTitle": "Added tokens",
             "admin": "__name__ (admin page)",
-            "description": "Tokens are currencies and other fungibles built on the Earthdollar platform. In order for accounts to watch for tokens and send them, you have to add their address to this list. You can create your own token by simply modifiying <a href=\"http://chriseth.github.io/browser-solidity/?gist=0d1a998d949e26942212\" target=\"_blank\">this example of a custom token contract</a> or learning more about <a href=\"https://www.earth dollareum.org/token#the-code\" target=\"_blank\">Earthdollar Tokens</a>.",
+            "description": "Tokens are currencies and other fungibles built on the Earthdollar platform. In order for accounts to watch for tokens and send them, you have to add their address to this list. You can create your own token by simply modifiying <a href=\"http://chriseth.github.io/browser-solidity/?gist=0d1a998d949e26942212\" target=\"_blank\">this example of a custom token contract</a> or learning more about <a href=\"https://www.earthdollar.org/token#the-code\" target=\"_blank\">Earthdollar Tokens</a>.",
             "deleteToken": "Do you want to remove the token <strong>__token__</strong> from your list?",
             "addedToken": "Added __token__ to your watch list",
             "editedToken": "Edited token __token__",
@@ -295,7 +295,7 @@
             "writeToContract": "Write to contract",
             "pickContract": "Pick a contract",
             "pickFunction": "Pick a function",
-            "noContract": "<p>Put the source of the contract you want here. You can find many examples of contracts at the <a href=\"http://earth dollareum.org\" target=\"_blank\">earth dollareum.org</a>: </p> <ul><li><a href=\"http://earth dollareum.org/token#the-code\" target=\"_blank\">Build a token</a></li><li><a href=\"http://earth dollareum.org/crowdsale#the-code\" target=\"_blank\">Start a crowdsale</a></li><li><a href=\"http://earth dollareum.org/dao#the-code\" target=\"_blank\">Create a blockchain organization</a></li></ul>",
+            "noContract": "<p>Put the source of the contract you want here. You can find many examples of contracts at the <a href=\"http://earthdollar.org\" target=\"_blank\">earthdollar.org</a>: </p> <ul><li><a href=\"http://earthdollar.org/token#the-code\" target=\"_blank\">Build a token</a></li><li><a href=\"http://earthdollar.org/crowdsale#the-code\" target=\"_blank\">Start a crowdsale</a></li><li><a href=\"http://earthdollar.org/dao#the-code\" target=\"_blank\">Create a blockchain organization</a></li></ul>",
             "buttons": {
                 "showContractInfo": "Show contract info",
                 "hideContractInfo": "Hide contract info",
