@@ -31,7 +31,7 @@ diff-sequence@1.0.6
 ecmascript@0.4.6
 ecmascript-runtime@0.2.11
 ejson@1.0.12
-ethereum:dapp-styles@0.5.5
+metf:dapp-styles@0.5.5
 fastclick@1.0.12
 frozeman:animation-helper@0.2.6
 frozeman:global-notifications@0.2.1
