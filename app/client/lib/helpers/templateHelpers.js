@@ -41,15 +41,53 @@ Template.registerHelper('isMistMode', function(){
 });
 
 /**
-Check if currenct unit is an tree unit
+Check if currenct unit is an ether unit
 
-@method (isEdUnit)
+@method (isEtherUnit)
 **/
-Template.registerHelper('isEdUnit', function(){
-    var unit = EdTools.getUnit();
+Template.registerHelper('isEtherUnit', function(){
+    var unit = EthTools.getUnit();
     return !(unit === 'usd' || unit === 'eur' || unit === 'btc');
 });
 
+
+/**
+Check if wallet has vulnerabilities
+
+@method (isVulnerable)
+@param {String} address and address of a wallet/account
+**/
+Template.registerHelper('isVulnerable', function(address){
+    var account = _.isString(address) ? Helpers.getAccountByAddress(address): this;
+
+    if(!account)
+        return;
+
+    // check if is wallet and is vulnerable
+    if(_.find(account.vulnerabilities || [], function(vul){
+        return vul;
+    })) {
+        return account;
+    }
+
+    // check if is owner account and is vulnerable
+    var wallets = _.map(Wallets.find({vulnerabilities: {$exists: true}}).fetch(), function(wal){
+        return (!!_.find(wal.vulnerabilities || [], function(vul){
+            return vul;
+        }))
+            ? wal : false;
+    });
+    var wallet = _.find(wallets, function(wal){
+        return _.contains(wal.owners, account.address);
+    })
+
+    if(wallet) {
+        // add vulnerabilities to account
+        account.vulnerabilities = wallet.vulnerabilities;
+        return account;
+    } else 
+        return false;
+});
 
 /**
 Return the current unit
@@ -57,7 +95,7 @@ Return the current unit
 @method (unit)
 **/
 Template.registerHelper('unit', function(){
-    return EdTools.getUnit(); 
+    return EthTools.getUnit();
 });
 
 /**
@@ -66,7 +104,7 @@ Return the latest block
 @method (latestBlock)
 **/
 Template.registerHelper('latestBlock', function(){
-    return EdBlocks.latest;
+    return EthBlocks.latest;
 });
 
 /**
@@ -74,9 +112,12 @@ Returns a list of accounts and wallets sorted by balance
 
 @method (latestBlock)
 **/
-Template.registerHelper('selectAccounts', function(){
-    var accounts = EdAccounts.find({}, {sort: {name: 1}}).fetch();
-    accounts = _.union(Wallets.find({owners: {$in: _.pluck(accounts, 'address')}, address: {$exists: true}}, {sort: {name: 1}}).fetch(), accounts);
+Template.registerHelper('selectAccounts', function(hideWallets){
+    var accounts = EthAccounts.find({}, {sort: {name: 1}}).fetch();
+    
+    if(hideWallets !== true)
+        accounts = _.union(Wallets.find({owners: {$in: _.pluck(accounts, 'address')}, address: {$exists: true}}, {sort: {name: 1}}).fetch(), accounts);
+    
     accounts.sort(Helpers.sortByBalance);
     return accounts;
 });
@@ -142,7 +183,7 @@ Formats a timestamp to any format given.
 @method (formatTime)
 @param {String} time         The timstamp, can be string or unix format
 @param {String} format       the format string, can also be "iso", to format to ISO string, or "fromnow"
-//@param {Boolean} realTime    Whtree or not this helper should re-run every 10s
+//@param {Boolean} realTime    Whether or not this helper should re-run every 10s
 @return {String} The formated time
 **/
 Template.registerHelper('formatTime', Helpers.formatTime);
@@ -151,7 +192,7 @@ Template.registerHelper('formatTime', Helpers.formatTime);
 /**
 Formats a given transactions balance
 
-    {{formatTransactionBalance value exchangeRates "tree"}}
+    {{formatTransactionBalance value exchangeRates "ether"}}
 
 @method formatTransactionBalance
 @param {String} value  the value to format
@@ -169,7 +210,9 @@ Formats address to a CaseChecksum
 @param {String} address             The address
 @return {String} checksumAddress    The returned, checksummed address
 **/
-Template.registerHelper('toChecksumAddress', web3.toChecksumAddress);
+Template.registerHelper('toChecksumAddress', function(address){
+    return _.isString(address) ? web3.toChecksumAddress(address) : '';
+});
 
 
 

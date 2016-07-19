@@ -1,8 +1,8 @@
 // var addLogWatching = function(newDocument){
 
 
-//     var contractInstance = web3.ed.contract(newDocument.jsonInterface).at(newDocument.address);
-//     var blockToCheckBack = (newDocument.checkpointBlock || 0) - earthdollarConfig.rollBackBy;
+//     var contractInstance = web3.eth.contract(newDocument.jsonInterface).at(newDocument.address);
+//     var blockToCheckBack = (newDocument.checkpointBlock || 0) - ethereumConfig.rollBackBy;
     
 //     if(blockToCheckBack < 0)
 //         blockToCheckBack = 0;
@@ -18,12 +18,12 @@
 //     var filter = contractInstance.allEvents({fromBlock: blockToCheckBack, toBlock: 'latest'});
     
 //     // get past logs, to set the new blockNumber
-//     var currentBlock = EdBlocks.latest.number;
+//     var currentBlock = EthBlocks.latest.number;
 //     filter.get(function(error, logs) {
 //         if(!error) {
 //             // update last checkpoint block
 //             CustomContracts.update({_id: newDocument._id}, {$set: {
-//                 checkpointBlock: (currentBlock || EdBlocks.latest.number) - earthdollarConfig.rollBackBy
+//                 checkpointBlock: (currentBlock || EthBlocks.latest.number) - ethereumConfig.rollBackBy
 //             }});
 //         }
 //     });
@@ -35,7 +35,7 @@
 //             if(log.removed) {
 //                 Events.remove(id);
 //             } else {
-//                 web3.ed.getBlock(log.blockHash, function(err, block){
+//                 web3.eth.getBlock(log.blockHash, function(err, block){
 //                     if(!err) {
 
 //                         _.each(log.args, function(value, key){
@@ -76,7 +76,7 @@ observeCustomContracts = function(){
         */
         added: function(newDocument) {
             // check if wallet has code
-            web3.ed.getCode(newDocument.address, function(e, code) {
+            web3.eth.getCode(newDocument.address, function(e, code) {
                 if(!e && code && code.length > 2 ){
                     CustomContracts.update(newDocument._id, {$unset: {
                         disabled: false
@@ -87,7 +87,7 @@ observeCustomContracts = function(){
                     
                 } else if (!e) {
                     // if there's no code, check the contract has a balance
-                    web3.ed.getBalance(newDocument.address, function(e, balance) {
+                    web3.eth.getBalance(newDocument.address, function(e, balance) {
                         if(!e && balance.gt(0)){
                             CustomContracts.update(newDocument._id, {$unset: {
                                 disabled: false

@@ -25,6 +25,7 @@ Helpers.rerun = {
     '1s': new ReactiveTimer(1)
 };
 
+
 /**
 Sort method for accounts and wallets to sort by balance
 
@@ -32,6 +33,27 @@ Sort method for accounts and wallets to sort by balance
 **/
 Helpers.sortByBalance = function(a, b){
     return !b.disabled && new BigNumber(b.balance, 10).gt(new BigNumber(a.balance, 10)) ? 1 : -1;
+};
+
+
+/**
+Return an account you own, from a list of accounts
+
+@method getOwnedAccountFrom
+@param {Array} accountList array of account addresses
+@return {Mixed} the account address of an account owned
+**/
+Helpers.getOwnedAccountFrom = function(accountList){
+    // Load the accounts owned by user and sort by balance
+    var accounts = EthAccounts.find({}, {sort: {balance: 1}}).fetch();
+    accounts.sort(Helpers.sortByBalance);
+
+    // Looks for them among the wallet account owner
+    var fromAccount = _.find(accounts, function(acc){
+       return (accountList.indexOf(acc.address)>=0);
+    })
+
+    return fromAccount ? fromAccount.address : '';
 };
 
 /**
@@ -78,7 +100,7 @@ Helpers.formatNumberByDecimals = function(number, decimals){
         numberFormat += "0";
     }
 
-    return EdTools.formatNumber(new BigNumber(number, 10).dividedBy(Math.pow(10, decimals)), numberFormat);
+    return EthTools.formatNumber(new BigNumber(number, 10).dividedBy(Math.pow(10, decimals)), numberFormat);
 };
 
 /**
@@ -101,7 +123,7 @@ Helpers.checkChain = function(callback){
     return callback(null);
 
 
-    web3.ed.getCode(originalContractAddress, function(e, code){
+    web3.eth.getCode(originalContractAddress, function(e, code){
         if(code && code.length <= 2) {
 
             if(_.isFunction(callback))
@@ -119,7 +141,7 @@ Check if the given wallet is a watch only wallet, by checking if we are one of o
 @param {String} id the id of the wallet to check
 */
 Helpers.isWatchOnly = function(id) {
-    return !Wallets.findOne({_id: id, owners: {$in: _.pluck(EdAccounts.find({}).fetch(), 'address')}});
+    return !Wallets.findOne({_id: id, owners: {$in: _.pluck(EthAccounts.find({}).fetch(), 'address')}});
 };
 
 /**
@@ -144,7 +166,7 @@ Helpers.showNotification = function(i18nText, values, callback) {
 };
 
 /**
-Gets the docuement matching the given addess from the EdAccounts or Wallets collection.
+Gets the docuement matching the given addess from the EthAccounts or Wallets collection.
 
 @method getAccountByAddress
 @param {String} address
@@ -154,7 +176,7 @@ Helpers.getAccountByAddress = function(address, reactive) {
     var options = (reactive === false) ? {reactive: false} : {};
     if(_.isString(address))
         address = address.toLowerCase();
-    return EdAccounts.findOne({address: address}, options) || Wallets.findOne({address: address}, options) || CustomContracts.findOne({address: address}, options);
+    return EthAccounts.findOne({address: address}, options) || Wallets.findOne({address: address}, options) || CustomContracts.findOne({address: address}, options);
 };
 
 /**
@@ -266,7 +288,7 @@ Helpers.formatTransactionBalance = function(value, exchangeRates, unit) {
         else 
             format += '[0]';
         
-        var price = new BigNumber(String(web3.fromSeed(value, 'tree')), 10).times(exchangeRates[unit].price);
+        var price = new BigNumber(String(web3.fromWei(value, 'ether')), 10).times(exchangeRates[unit].price);
         return EthTools.formatNumber(price, format) + ' '+ unit.toUpperCase();
     } else {
         return EthTools.formatBalance(value, format + '[0000000000000000] UNIT');
@@ -359,15 +381,18 @@ Takes a camelcase and shows it with spaces
 
 @method toSentence
 @param {string} camelCase    A name in CamelCase or snake_case format
-@return {string} sentence    The same name with spaces
+@return {string} sentence    The same name, sanitized, with spaces
 **/
 Helpers.toSentence = function (inputString, noHTML) {
     if (typeof inputString == 'undefined') 
-        return false;
-    else if (noHTML === true) // only consider explicit true
-        return inputString.replace(/([A-Z]+|[0-9]+)/g, ' $1')
-    else 
-        return inputString.replace(/([A-Z]+|[0-9]+)/g, ' $1').replace(/([\_])/g, '<span class="dapp-punctuation">$1</span>');
+      return false;
+    else {
+    	inputString = inputString.replace(/[^a-zA-Z0-9_]/g, '');
+      if (noHTML === true) // only consider explicit true
+        return inputString.replace(/([A-Z]+|[0-9]+)/g, ' $1').trim();
+      else 
+        return inputString.replace(/([A-Z]+|[0-9]+)/g, ' $1').trim().replace(/([\_])/g, '<span class="dapp-punctuation">$1</span>');
+    }
 }
 
 

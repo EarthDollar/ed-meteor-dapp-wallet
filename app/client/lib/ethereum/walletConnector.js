@@ -23,27 +23,27 @@ collectionObservers = [];
 
 
 /**
-Config for the earthdollar connector
+Config for the ethereum connector
 
 @property config
 */
-earthdollarConfig = {
+ethereumConfig = {
     /**
     Number of blocks to rollback, from the last checkpoint block of the wallet.
 
-    @property earthdollarConfig.rollBackBy
+    @property ethereumConfig.rollBackBy
     */
     rollBackBy: 0,
     /**
     Number of blocks to confirm a wallet
 
-    @property earthdollarConfig.requiredConfirmations
+    @property ethereumConfig.requiredConfirmations
     */
     requiredConfirmations: 12,
     /**
     The default daily limit used for simple accounts
 
-    @property earthdollarConfig.dailyLimitDefault
+    @property ethereumConfig.dailyLimitDefault
     */
     dailyLimitDefault: '100000000000000000000000000'
 };
@@ -59,20 +59,20 @@ connectToNode = function(){
     console.time('startNode')
     console.log('Connect to node...');
 
-    EdAccounts.init();
-    EdBlocks.init();
+    EthAccounts.init();
+    EthBlocks.init();
 
-    if (EdAccounts.find().count() > 0) {
+    if (EthAccounts.find().count() > 0) {
         checkForOriginalWallet();
     }
 
-    // EdBlocks.detectFork(function(oldBlock, block){
+    // EthBlocks.detectFork(function(oldBlock, block){
     //     console.log('FORK detected from Block #'+ oldBlock.number + ' -> #'+ block.number +', rolling back!');
         
     //     // Go through all accounts and re-run
     //     _.each(Wallets.find({}).fetch(), function(wallet){
     //         // REMOVE ADDRESS for YOUNG ACCOUNTS, so that it tries to get the Created event and correct address again
-    //         if(wallet.creationBlock + earthdollarConfig.requiredConfirmations >= block.number)
+    //         if(wallet.creationBlock + ethereumConfig.requiredConfirmations >= block.number)
     //             delete wallet.address;
 
     //         setupContractFilters(wallet);

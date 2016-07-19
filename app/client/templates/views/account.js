@@ -11,7 +11,7 @@ Watches custom events
 */
 var addLogWatching = function(newDocument){
     var contractInstance = web3.eth.contract(newDocument.jsonInterface).at(newDocument.address);
-    var blockToCheckBack = (newDocument.checkpointBlock || 0) - earthdollarConfig.rollBackBy;
+    var blockToCheckBack = (newDocument.checkpointBlock || 0) - ethereumConfig.rollBackBy;
     
     if(blockToCheckBack < 0)
         blockToCheckBack = 0;
@@ -32,7 +32,7 @@ var addLogWatching = function(newDocument){
         if(!error) {
             // update last checkpoint block
             CustomContracts.update({_id: newDocument._id}, {$set: {
-                checkpointBlock: (currentBlock || EthBlocks.latest.number) - earthdollarConfig.rollBackBy
+                checkpointBlock: (currentBlock || EthBlocks.latest.number) - ethereumConfig.rollBackBy
             }});
         }
     });
@@ -93,22 +93,6 @@ Template['views_account'].helpers({
         return Helpers.getAccountByAddress(FlowRouter.getParam('address'));
     },
     /**
-    Run this helper, if the address changed
-
-    @method (addressChanged)
-    */
-    addressChanged: function(){
-        var address = this.address
-            template = Template.instance();
-
-        // stop watching custom events, on destroy
-        if(template.customEventFilter) {
-            template.customEventFilter.stopWatching();
-            template.customEventFilter = null;
-            TemplateVar.set('watchEvents', false);
-        }
-    },
-    /**
     Get the current jsonInterface, or use the wallet jsonInterface
 
     @method (jsonInterface)
@@ -138,7 +122,7 @@ Template['views_account'].helpers({
     @method (showDailyLimit)
     */
     'showDailyLimit': function(){
-        return (this.dailyLimit && this.dailyLimit !== earthdollarConfig.dailyLimitDefault);
+        return (this.dailyLimit && this.dailyLimit !== ethereumConfig.dailyLimitDefault);
     },
     /**
     Show requiredSignatures section
@@ -238,8 +222,8 @@ var accountClipboardEventHandler = function(e){
                 copyAddress();
             },
             cancel: true,
-            modalQuestionOkButtonText: new Spacebars.SafeString(TAPi18n.__('wallet.accounts.modal.buttonOk')),
-            modalQuestionCancelButtonText: new Spacebars.SafeString(TAPi18n.__('wallet.accounts.modal.buttonCancel'))
+            modalQuestionOkButtonText: TAPi18n.__('wallet.accounts.modal.buttonOk'),
+            modalQuestionCancelButtonText: TAPi18n.__('wallet.accounts.modal.buttonCancel')
         });
     }
 };
@@ -377,9 +361,11 @@ Template['views_account'].events({
     /**
     Click watch contract events
     
-    @event click button.toggle-watch-events
+    @event change button.toggle-watch-events
     */
     'change .toggle-watch-events': function(e, template){
+        e.preventDefault();
+
         if(template.customEventFilter) {
             template.customEventFilter.stopWatching();
             template.customEventFilter = null;

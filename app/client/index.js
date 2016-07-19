@@ -22,7 +22,7 @@ Meteor.startup(function() {
             var lang = TAPi18n.getLanguage().substr(0,2);
             moment.locale(lang);
             numeral.language(lang);
-            EdTools.setLocale(lang);
+            EthTools.setLocale(lang);
         }
 
         // If on the mainnet, this will add the unicorn token by default, only once.

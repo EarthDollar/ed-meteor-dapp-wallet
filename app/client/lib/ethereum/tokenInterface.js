@@ -117,4 +117,4 @@ var tokenInterface = [
     }
 ];
 
-TokenContract = web3.ed.contract(tokenInterface);
+TokenContract = web3.eth.contract(tokenInterface);

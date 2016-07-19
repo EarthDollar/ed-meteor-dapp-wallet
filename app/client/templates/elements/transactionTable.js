@@ -18,7 +18,7 @@ Block required until a transaction is confirmed.
 @property blocksForConfirmation
 @type Number
 */
-var blocksForConfirmation = earthdollarConfig.requiredConfirmations;
+var blocksForConfirmation = ethereumConfig.requiredConfirmations;
 
 /**
 The default limit, of none is given.

@@ -22,7 +22,7 @@ if(location.origin === 'file://') {
 
 
 FlowRouter.triggers.enter([function(){
-    EdElements.Modal.hide();
+    EthElements.Modal.hide();
     $(window).scrollTop(0);
 }, updateMistMenu]);
 
