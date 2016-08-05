@@ -12,7 +12,13 @@
                     <i class="icon-arrow-up"></i>
                     <span>{{i18n 'wallet.app.buttons.send'}}</span>
                 </a>
-            </li>            
+            </li>    
+            <li>
+                <a href="{{pathFor route='history'}}" class="{{isActiveRoute regex='history'}}">
+                    <i class="icon-docs"></i>
+                    <span>{{i18n 'wallet.app.buttons.history'}}</span>
+                </a>
+            </li>        
             
             <li class="block-info dapp-flex-item  {{#if TemplateVar.get 'syncing'}}syncing{{/if}}">
                 {{#unless isMistMode}}

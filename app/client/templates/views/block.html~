@@ -1,0 +1,47 @@
+<template name="views_history">
+
+<script>
+function history_selection(request_str) {
+ history.searchBlock = document.getElementById("history_select").value;
+ alert({{number}});
+}
+</script>
+
+    <!-- we use a form, which posts into the "dapp-form-helper-iframe" iframe, so that the browser stores inout fields for native autocpmplete -->
+	 <ul> 	 	 
+	    <form class="account-history-form" action="about:blank" target="dapp-form-helper-iframe" autocomplete="on">
+	       <p>Enter Tx Hash, Address, or Block Number:</p>		 
+			 <input id="history_select" type="text" value={{number}} name="requestType" required  ng-model="ethRequest"  class="form-control">
+			 <button type="submit" class="btn btn-success" onclick=history_selection()>Search</button>
+		 </form>  
+		    <br>
+		    <div>			
+				 <table class="history-block">
+				    <tr> <th>Block Number</th>     <td>{{number}}</td>          </tr>
+				    <tr> <th>Mint</th>             <td>{{mint}}</td>            </tr>
+				    <tr> <th>Difficulty</th>       <td>{{difficulty}}</td>      </tr>
+				    <tr> <th>Total Difficulty</th> <td>{{totalDifficulty}}</td> </tr>
+				    <tr> <th>Gas Limit</th>        <td>{{gasLimit}}</td>        </tr>
+				    <tr> <th>Gas Used</th>         <td>{{gasUsed}}</td>         </tr>
+				    <tr> <th>Miner</th>            <td>{{miner}}</td>           </tr>
+				    <tr> <th>Nonce</th>            <td>{{nonce}}</td>	          </tr> 
+				    <tr> <th>Size</th>             <td>{{size}}</td>            </tr>
+				    <tr> <th>Timestamp</th>        <td>{{timestamp}}</td>       </tr>
+			    </table>
+			     <table class="history-block">
+				    <tr> <th>Hash</th>             <td>{{hash}}</td>            </tr>
+				  	 <tr> <th>Parent Hash</th>      <td>{{parentHash}}</td>      </tr>
+				    <tr> <th>Transactions</th>     <td>{{transactions}}</td>    </tr>
+				    <tr> <th>Transactions Root</th><td>{{transactionsRoot}}</td></tr>
+				    <tr> <th>Receipt Root</th>     <td>{{receiptRoot}}</td>     </tr>
+				    <tr> <th>ExtraData</th>        <td>{{extraData}}</td>       </tr>
+				    <tr> <th>State Root</th>       <td>{{stateRoot}}</td>       </tr>
+				    <tr> <th>Uncles</th>           <td>{{uncles}}</td>          </tr>
+				    <tr> <th>Sha3Uncles</th>       <td>{{sha3Uncles}}</td>      </tr>
+				    <tr> <th>LogsBloom</th>        <td>{{logsBloom}}</td>       </tr>
+				 </table>
+			  </div>			   
+		</ul>
+</template>
+
+

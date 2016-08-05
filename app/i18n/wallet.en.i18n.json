@@ -13,6 +13,7 @@
                 "wallet": "Wallets",
                 "send": "Send",
                 "contracts": "Contracts",
+                "history": "History",
                 "deploy": "Deploy",
                 "tokens": "Tokens",
                 "receive": "Receive",
@@ -225,6 +226,10 @@
                 "contractsCantBeOwners": "Contracts can't be owners.",
                 "checkOwnerAddress": "Please change the contract address __address__ to an account."
             }
+        },
+        "history": {
+        	"title": "Account History",
+        	"address": "Enter Address, Block, or Transaction Receipt."
         },
         "send": {
             "title": "<strong>Send</strong> funds",

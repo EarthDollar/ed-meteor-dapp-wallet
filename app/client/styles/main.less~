@@ -487,6 +487,7 @@ body {
 .history-block {
 	font-size: 1em;
    color: @colorTextSecondary;
+   border: 1px solid black;
    text-align: left;
    float:left;
    width: 15em;

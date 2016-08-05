@@ -17,12 +17,12 @@ The available units
 @property selectableUnits
 */
 selectableUnits = [{
-    text: 'ETHER',
-    value: 'ether'
+    text: 'TREE', //(µΞ)
+    value: 'tree'
 },
 {
-    text: 'FINNEY', //(µΞ)
-    value: 'finney'
+    text: 'ETHER',
+    value: 'eth'
 },
 {
     text: 'BTC',

@@ -27,12 +27,20 @@ updateMistMenu = function(){
         }, function(){
             FlowRouter.go('/send');
         });
+        mist.menu.add('history',{
+            position: 3,
+            name: TAPi18n.__('wallet.app.buttons.history'),
+            selected: routeName === 'history'
+        }, function(){
+            FlowRouter.go('/history');
+        });
+
 
         _.each(accounts, function(account, index){
             mist.menu.add(account._id,{
-                position: 3 + index,
+                position: 4 + index,
                 name: account.name,
-                badge: EthTools.formatBalance(account.balance, "0 a", 'ether')+ ' ETH',
+                badge: EthTools.formatBalance(account.balance, "0 a", 'tree')+ ' TREE',
                 selected: (location.pathname === '/account/'+ account.address)
             }, function(){
                 FlowRouter.go('/account/'+ account.address);

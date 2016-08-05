@@ -61,6 +61,23 @@ FlowRouter.route('/send', {
     }
 });
 
+
+/**
+The history route. //earthdollar
+
+@method history
+*/
+FlowRouter.route('/history', {
+    name: 'history',
+    action: function(params, queryParams) {
+        BlazeLayout.render('layout_main', {
+            header: 'layout_header',
+            main: 'views_history'
+        });
+    }
+});
+
+
 /**
 The Coins route.
 
